@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  div#cssmenu
+    ul
+      li.active
+        a(href='#/') Início
+      li
+        a(href='#/start') Configurações
+  div.wrapper
+    div(ng-view)  
