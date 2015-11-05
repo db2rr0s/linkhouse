@@ -1,12 +1,12 @@
 extends layout
 
 block content
-  label Status: {{ socket.connected ? 'Conectado' : 'Desconectado' }}
   div#cssmenu(ng-controller='MenuCtrl')
     ul
       li(ng-class="{active: active('/')}")
-        a(href='#/') Início
+        a(href='#/') Home
       li(ng-class="{active: active('/start')}")
-        a(href='#/start') Configurações   
+        a(href='#/start') Settings
+  label.right Status: {{ socket.connected ? 'Connected' : 'Disconnected' }}
   div.wrapper
     div(ng-view)

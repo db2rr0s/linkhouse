@@ -1,7 +1,7 @@
 angular.module('linkhouse.controllers', [])
 
 .controller('IndexCtrl', function($scope, $rootScope){
-	$scope.test = 'just a test';
+	$scope.test = 'Settings';
 	$scope.message = 'nothing';
 	console.log('index ctrl');
 
