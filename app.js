@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/linkhousedb');
 
 var index = require('./routes/index');
 var partials = require('./routes/partials');
@@ -51,7 +53,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.ioconf = function(io){  
+app.ioconf = function(io){
   io.on('connection', function(socket){
     console.log('user connected');
 
