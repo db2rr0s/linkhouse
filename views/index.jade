@@ -7,6 +7,6 @@ block content
         a(href='#/') Home
       li(ng-class="{active: active('/start')}")
         a(href='#/start') Settings
-  label.right Status: {{ socket.connected ? 'Connected' : 'Disconnected' }}
+  span.label.label-default.right Status: {{ status }}
   div.wrapper
     div(ng-view)

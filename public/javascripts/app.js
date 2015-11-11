@@ -30,9 +30,36 @@ angular.module('linkhouse', ['ngRoute', 'linkhouse.services', 'linkhouse.control
 })
 .run(function($rootScope){
 	$rootScope.callbacks = {};
-	$rootScope.socket = new io();	
+	$rootScope.status = 'Disconnected';
+	var socket = new io();	
 
-	$rootScope.socket.on('res', function(msg){
+	socket.on('connect', function(){
+		console.log('connect');
+		$rootScope.status = 'Connected';
+		$rootScope.$apply();
+	});
+	socket.on('connect_error', function(obj){
+		console.log('connect_error ' + obj);
+		$rootScope.status = 'Disconnected';
+	});
+	socket.on('connect_timeout', function(){
+		console.log('connect_timeout');
+		$rootScope.status = 'Disconnected';
+	});
+	socket.on('reconnect', function(number){
+		console.log('reconnect');
+		$rootScope.status = 'Connected';
+	});
+	socket.on('reconnecting', function(number){
+		console.log('reconnecting');
+		$rootScope.status = 'Connecting...';
+	});
+	socket.on('reconnect_error', function(obj){
+		console.log('reconnect_error');
+		$rootScope.status = 'Disconnected';
+	});
+
+	socket.on('res', function(msg){
 		var callback = $rootScope.callbacks[msg.id];
 		delete $rootScope.callbacks[msg.id]
 		delete msg.id;
@@ -49,4 +76,6 @@ angular.module('linkhouse', ['ngRoute', 'linkhouse.services', 'linkhouse.control
 		$rootScope.callbacks[id] = callback;
 		$rootScope.socket.emit('req', {id: id, data: msg});
 	};	
+
+	$rootScope.socket = socket;
 });

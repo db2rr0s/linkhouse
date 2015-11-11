@@ -3,37 +3,47 @@ angular.module('linkhouse.controllers', [])
 .controller('IndexCtrl', function($scope, $rootScope){
 	$scope.test = 'Settings';
 	$scope.message = 'nothing';
-	console.log('index ctrl');
+	$scope.luzquarto = false;
+	$scope.luzsala = false;
 
-	$scope.status = function(){
-		$scope.sendio('&', function(msg){
-			console.log(msg);
-			if(msg.success){
-				console.log('ok')
-			} else {
-				console.log('bufu: ' + msg.message)
-			}
-		});
-	}
-
-	$scope.send = function(){		
-		$scope.sendio('bufu', function(msg){
-			console.log(msg)
+	$scope.refresh = function(){		
+		$scope.sendio('*', function(msg){
 			if(msg.success){
 				console.log('ok')				
+				$scope.luzquarto = (msg.data[1] == 1);
+				$scope.luzsala = (msg.data[2] == 1);
+				$scope.retorno = msg.data;
+				$scope.$apply();
 			} else {
 				console.log('bufu: ' + msg.message)
+				$scope.retorno = 'erro: ' + msg.message;
 			}
 			$scope.message = msg.message;
 		});		
 	}
 
-	$scope.status();	
+	$scope.refresh();	
+
+	$scope.change = function(){
+        $scope.sendio('$' + ($scope.luzquarto ? '1' : '0') + ($scope.luzsala ? '1' : '0') + '#######', function(msg){
+        //$scope.sendio('$11#######', function(msg){
+			if(msg.success){
+				console.log('ok')				
+				$scope.luzquarto = (msg.data[1] == 1);
+				$scope.luzsala = (msg.data[2] == 1);
+				$scope.retorno = msg.data;
+				$scope.$apply();
+			} else {
+				console.log('bufu: ' + msg.message)
+				$scope.retorno = 'erro: ' + msg.message;
+			}
+			$scope.message = msg.message;
+		});
+	}
 })
 
 .controller('StartCtrl', function($scope){
 	$scope.test = 'just a test';
-	console.log('start ctrl');
 })
 
 .controller('MenuCtrl', function($scope, $location){

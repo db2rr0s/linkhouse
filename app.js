@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/linkhousedb');
+var net = require('net');
 
 var index = require('./routes/index');
 var partials = require('./routes/partials');
@@ -63,12 +64,32 @@ app.ioconf = function(io){
 
     socket.on('req', function(msg){
       console.log('req with msg ' + JSON.stringify(msg));
+      var client = new net.Socket();
+	  client.on('data', function(data){
+		  //TODO: tratar retorno
+		  var ret = data.toString();
+		  console.log(ret);
+		  client.destroy();
+		  socket.emit('res', {success: true, id: msg.id, data: ret, message: 'Comando executado!'});
+	  });
+	  client.on('close', function(){
+		  //TODO: ver
+		  console.log('bufu');
+	  });
+	  client.on('error', function(err){
+	      console.log('BUFU');console.log(err);
+          socket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
+	  });
+	  client.connect(8082, 'andxor-01.noip.me', function(){
+		  client.write(msg.data + '\r');
+	  });
+	  return;
       if(msg.data === '&'){
         // TODO: teste de comunicação
         socket.emit('res', {success: true, id: msg.id, data: msg.data, message: 'Comando executado!'});
       } else if(msg.data === '*'){
         // TODO: recupera status
-        socket.emit('res', {success: true, id: msg.id, data: msg.data, message: 'Comando executado!'});
+        socket.emit('res', {success: true, id: msg.id, data: '*10##', message: 'Comando executado!'});
       } else if(msg.data[0] === '$'){
         // TODO: comandos
         socket.emit('res', {success: true, id: msg.id, data: msg.data, message: 'Comando executado!'});

@@ -1,2 +1,13 @@
-button.btn.waves-effect.waves-light(ng-click='send()')
-  i.fa.fa-lightbulb-o &nbsp; turn on
+div.checkbox.checkbox-slider--default
+  label
+    input(type='checkbox', ng-model='luzquarto', ng-change='change()')
+    span Luz do Quarto
+div.checkbox.checkbox-slider--default
+  label
+    input(type='checkbox', ng-model='luzsala', ng-change='change()')
+    span Luz da Sala
+button.btn.btn-default.btn-sm(ng-click='refresh()')
+  i.fa.fa-refresh &nbsp;Refresh
+br
+br
+small RETORNO: {{ retorno }}
