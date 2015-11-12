@@ -2,4 +2,10 @@ form
   div.form-group
     div.col-lg-6
       label(for='url') URL
-      input#url.form-control(type='text', placeholder='URL')
+      input#url.form-control(type='text', placeholder='URL', ng-model='settings.url')
+  div.form-group
+    div.col-lg-6
+      button.btn.btn-success(type='button', ng-click='save()')
+br
+br
+small RETORNO: {{ retorno }}

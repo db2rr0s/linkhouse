@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/linkhousedb');
 var net = require('net');
 
 var index = require('./routes/index');
@@ -54,6 +53,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
+mongoose.connect('mongodb://localhost/linkhousedb');
+
+var Settings = mongoose.model('Settings', {url: String});
+
 app.ioconf = function(io){
   io.on('connection', function(socket){
     console.log('user connected');
@@ -84,19 +87,21 @@ app.ioconf = function(io){
 		  client.write(msg.data + '\r');
 	  });
 	  return;
-      if(msg.data === '&'){
-        // TODO: teste de comunicação
-        socket.emit('res', {success: true, id: msg.id, data: msg.data, message: 'Comando executado!'});
-      } else if(msg.data === '*'){
-        // TODO: recupera status
-        socket.emit('res', {success: true, id: msg.id, data: '*10##', message: 'Comando executado!'});
-      } else if(msg.data[0] === '$'){
-        // TODO: comandos
-        socket.emit('res', {success: true, id: msg.id, data: msg.data, message: 'Comando executado!'});
-      } else {
-        socket.emit('res', {success: false, id: msg.id, data: msg.data, message: 'Comando inválido!'});
-        return;
-      }      
+    });
+
+    socket.on('save', function(msg){
+      console.log('save with ' + msg);      
+      var url = new Settings({'url': msg.url});
+      url.save(function(err){
+        if(err){
+          console.log('erro ' + err);
+        }
+
+        Settings.find(function(err, settings){
+          socket.emit('res', {id: msg.id, message: settings});
+        });
+        
+      })      
     });
   });
 }

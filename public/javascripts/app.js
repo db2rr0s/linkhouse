@@ -1,20 +1,6 @@
 angular.module('linkhouse', ['ngRoute', 'linkhouse.services', 'linkhouse.controllers'])
 
 .config(function($routeProvider){
-	/*$urlRouterProvider.otherwise('/index');
-	$stateProvider
-	.state('linkhouse', {
-		url: '',
-		abstract: true,
-		template: '<div ui-view/>',
-		controller: 'LinkHouseCtrl'
-	})
-	.state('linkhouse.index', {
-		url: '/index',
-		templateUrl: 'partials/index',
-		controller: 'IndexCtrl'
-	});*/
-
 	$routeProvider
 	.when('/', {
 		templateUrl: 'partials/index',
@@ -41,22 +27,27 @@ angular.module('linkhouse', ['ngRoute', 'linkhouse.services', 'linkhouse.control
 	socket.on('connect_error', function(obj){
 		console.log('connect_error ' + obj);
 		$rootScope.status = 'Disconnected';
+		$rootScope.$apply();
 	});
 	socket.on('connect_timeout', function(){
 		console.log('connect_timeout');
 		$rootScope.status = 'Disconnected';
+		$rootScope.$apply();
 	});
 	socket.on('reconnect', function(number){
 		console.log('reconnect');
 		$rootScope.status = 'Connected';
+		$rootScope.$apply();
 	});
 	socket.on('reconnecting', function(number){
 		console.log('reconnecting');
 		$rootScope.status = 'Connecting...';
+		$rootScope.$apply();
 	});
 	socket.on('reconnect_error', function(obj){
 		console.log('reconnect_error');
 		$rootScope.status = 'Disconnected';
+		$rootScope.$apply();
 	});
 
 	socket.on('res', function(msg){
@@ -72,10 +63,14 @@ angular.module('linkhouse', ['ngRoute', 'linkhouse.services', 'linkhouse.control
 	});
 
 	$rootScope.sendio = function(msg, callback){
+		$rootScope.sendio('req', msg, callback);		
+	};
+
+	$rootScope.sendio = function(event, msg, callback){
 		var id = Math.floor((Math.random() * 9999) + 1);
 		$rootScope.callbacks[id] = callback;
-		$rootScope.socket.emit('req', {id: id, data: msg});
-	};	
+		$rootScope.socket.emit(event, {id: id, data: msg});	
+	};
 
 	$rootScope.socket = socket;
 });
