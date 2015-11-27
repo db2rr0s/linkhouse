@@ -10,7 +10,6 @@ var net = require('net');
 var index = require('./routes/index');
 var partials = require('./routes/partials');
 var rest = require('./routes/rest');
-var users = require('./routes/users');
 
 var app = express();
 
@@ -27,7 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/partials', partials);
 app.use('/rest', rest);
-app.use('/users', users);
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -53,9 +51,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-mongoose.connect('mongodb://localhost/linkhousedb');
-
-var Settings = mongoose.model('Settings', {url: String});
+mongoose.connect('mongodb://lhuser:Lhus3r$@93.188.161.195/linkhousedb');
 
 app.ioconf = function(io){
   io.on('connection', function(socket){
