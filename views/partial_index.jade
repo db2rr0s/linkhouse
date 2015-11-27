@@ -1,13 +1,17 @@
-div.checkbox.checkbox-slider--default
-  label
-    input(type='checkbox', ng-model='luzquarto', ng-change='change()')
-    span Luz do Quarto
-div.checkbox.checkbox-slider--default
-  label
-    input(type='checkbox', ng-model='luzsala', ng-change='change()')
-    span Luz da Sala
-button.btn.btn-default.btn-sm(ng-click='refresh()')
-  i.fa.fa-refresh &nbsp;Refresh
-br
-br
-small RETORNO: {{ retorno }}
+div.container
+  div.section
+    div.row
+      div.col.s12.m4
+        p
+          input.filled-in#luzdoquarto(type='checkbox', ng-model='luzquarto', ng-change='change()')
+          label(for='luzdoquarto') Luz do Quarto
+        p
+          input.filled-in#luzdasala(type='checkbox', ng-model='luzsala', ng-change='change()')
+          label(for='luzdasala') Luz da Sala
+    div.row
+      div.col.s12.m4
+        button.waves-effect.waves-light.btn(ng-click='refresh()') Refresh
+    div.row
+      div.col.s12.m4
+        small RETORNO: {{ retorno }}
+div.fillall

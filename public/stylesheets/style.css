@@ -1,12 +1,38 @@
 body {
-  padding: 10px 50px 50px 50px;  
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-.wrapper {
-	margin-top: 25px;
+main {
+  flex: 1 0 auto;
 }
 
-.right {
-	float: right;
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  color: #26a69a;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+.fillall {
+	min-height: 340px;
 }

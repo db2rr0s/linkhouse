@@ -1,11 +1,26 @@
-form
-  div.form-group
-    div.col-lg-6
-      label(for='url') URL
-      input#url.form-control(type='text', placeholder='URL', ng-model='settings.url')
-  div.form-group
-    div.col-lg-6
-      button.btn.btn-success(type='button', ng-click='save()')
-br
-br
-small RETORNO: {{ retorno }}
+div.container
+  div.section
+    div.row
+      form.col.s12
+        div.row
+          div.input-field.col.s8            
+            input#public_ip.validate(type='text', placeholder='Public IP', ng-model='settings.public_ip')
+            label(for='public_ip') Public IP
+          div.input-field.col.s4            
+            input#public_port.validate(type='text', placeholder='Public Port', ng-model='settings.public_port')
+            label(for='public_port') Public Port
+        div.row
+          div.input-field.col.s8           
+            input#internal_ip.validate(type='text', placeholder='Internal IP', ng-model='settings.internal_ip')
+            label(for='internal_ip') Internal IP
+          div.input-field.col.s4            
+            input#internal_port.validate(type='text', placeholder='Internal Port', ng-model='settings.internal_port')
+            label(for='internal_port') Internal Port
+        div.row
+          div.input-field.col.s12            
+            input#name.validate(type='text', placeholder='Name', ng-model='settings.url')
+            label(for='name') Name
+        div.row
+          div.col.s12
+            button.waves-effect.waves-light.btn.right(type='button', ng-click='save()') Save
+div.fillall

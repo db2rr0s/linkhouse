@@ -1,12 +1,16 @@
 extends layout
 
 block content
-  div#cssmenu(ng-controller='MenuCtrl')
-    ul
-      li(ng-class="{active: active('/')}")
-        a(href='#/') Home
-      li(ng-class="{active: active('/start')}")
-        a(href='#/start') Settings
-  span.label.label-default.right Status: {{ status }}
-  div.wrapper
-    div(ng-view)
+  nav.white(role='navigation', ng-controller='MenuCtrl')
+    div.container
+      a.brand-logo#logo-container(href='#') LinkHouse
+      ul.right.hide-on-med-and-down
+        li(ng-class="{active: active('/')}")
+          a(href='#/') Home
+        li(ng-class="{active: active('/start')}")
+          a(href='#/start') Settings
+  div(ng-view)
+  footer.page-footer.teal
+    div.footer-copyright
+      div.container LinkHouse © 2015 - Todos os direitos reservados
+        span.right Status: {{ status }}
