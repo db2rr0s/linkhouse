@@ -35,15 +35,39 @@ angular.module('linkhouse.controllers', [])
 	};
 })
 
-.controller('StartCtrl', function($scope){	
-	$scope.settings = {
-		url: ''
+.controller('DeviceCtrl', function($scope, $http){	
+	$scope.device = {
+		name: '',
+		public_ip: '',
+		public_port: '',
+		internal_ip: '',
+		internal_port: ''
 	};
+
+	$http.get('/api/devices')
+	.success(function(data){
+		if(data.status == 0){
+			$scope.devices = data.devices;
+		} else {
+			console.log(data);
+		}
+	})
+	.error(function(data){
+		console.log(data);
+	});
 	
 	$scope.save = function(){
-		$scope.sendio('save', $scope.settings, function(msg){
-			$scope.retorno = msg;
+		$http.post('/api/devices', $scope.device)
+		.success(function(data){
+			console.log(data);
+		})
+		.error(function(data){
+			console.log(data);
 		});
+	};
+	$scope.showCreateModal = function(){
+		console.log('vai criar')
+		$('#create').openModal();
 	};
 })
 

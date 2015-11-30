@@ -1,0 +1,41 @@
+div.container  
+  div.section
+    a.right.btn-flat(ng-click='showCreateModal()') Create Device
+    div.row
+      div.col.s12        
+        table
+          thead
+            tr
+              th Name
+              th Public URL
+              th Internal URL
+          tbody
+            tr(ng-repeat='device in devices')
+              td {{device.name}}
+              td {{device.public_ip}}:{{device.public_port}}
+              td {{device.internal_ip}}:{{device.internal_port}}
+div#create.modal
+  div.modal-content
+    h4 New Device
+    form.col.s12
+      div.row
+        div.input-field.col.s12            
+          input#name.validate(type='text', placeholder='Name', ng-model='device.name')
+          label(for='name') Name
+      div.row
+        div.input-field.col.s8            
+          input#public_ip.validate(type='text', placeholder='Public IP', ng-model='device.public_ip')
+          label(for='public_ip') Public IP
+        div.input-field.col.s4            
+          input#public_port.validate(type='text', placeholder='Public Port', ng-model='device.public_port')
+          label(for='public_port') Public Port
+      div.row
+        div.input-field.col.s8           
+          input#internal_ip.validate(type='text', placeholder='Internal IP', ng-model='device.internal_ip')
+          label(for='internal_ip') Internal IP
+        div.input-field.col.s4            
+          input#internal_port.validate(type='text', placeholder='Internal Port', ng-model='device.internal_port')
+          label(for='internal_port') Internal Port        
+      div.row
+        div.col.s12
+          button.waves-effect.waves-light.btn.right(type='button', ng-click='save()') Save

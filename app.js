@@ -9,7 +9,7 @@ var net = require('net');
 
 var index = require('./routes/index');
 var partials = require('./routes/partials');
-var rest = require('./routes/rest');
+var devices = require('./routes/devices');
 
 var app = express();
 
@@ -25,7 +25,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/partials', partials);
-app.use('/rest', rest);
+app.use('/api/devices', devices);
+
+app.all('/*', function(req, res) {
+  res.render('index');
+});
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

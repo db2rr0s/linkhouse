@@ -31,6 +31,10 @@ p {
 
 footer.page-footer {
   margin: 0;
+  /*teste*/
+  position: absolute;
+  width: 100%;
+  bottom: 0px;  
 }
 
 .fillall {

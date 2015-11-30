@@ -5,8 +5,8 @@ router.get('/index', function(req, res, next) {
   res.render('partial_index');
 });
 
-router.get('/start', function(req, res, next) {
-  res.render('partial_start');
+router.get('/devices', function(req, res, next) {
+  res.render('partial_devices');
 });
 
 module.exports = router;

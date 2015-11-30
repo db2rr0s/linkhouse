@@ -3,12 +3,19 @@ extends layout
 block content
   nav.white(role='navigation', ng-controller='MenuCtrl')
     div.container
-      a.brand-logo#logo-container(href='#') LinkHouse
+      a.brand-logo#logo-container(href='/') LinkHouse
       ul.right.hide-on-med-and-down
         li(ng-class="{active: active('/')}")
-          a(href='#/') Home
-        li(ng-class="{active: active('/start')}")
-          a(href='#/start') Settings
+          a(href='/') Home
+        li(ng-class="{active: active('/devices')}")
+          a(href='/devices') Devices
+      ul#nav-mobile.side-nav
+        li(ng-class="{active: active('/')}")
+          a(href='/') Home
+        li(ng-class="{active: active('/devices')}")
+          a(href='/devices') Devices
+      a.button-collapse(data-activates='nav-mobile', href='#')
+        i.material-icons menu
   div(ng-view)
   footer.page-footer.teal
     div.footer-copyright
