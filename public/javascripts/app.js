@@ -63,10 +63,12 @@ angular.module('linkhouse', ['ngRoute', 'linkhouse.services', 'linkhouse.control
 	});
 
 	$rootScope.sendio = function(msg, callback){
-		$rootScope.sendio('req', msg, callback);		
+		console.log('sendio(msg,callback)');
+		$rootScope.sendio2('req', msg, callback);		
 	};
 
-	$rootScope.sendio = function(event, msg, callback){
+	$rootScope.sendio2 = function(event, msg, callback){
+		console.log('sendio(event,msg,callback)');
 		var id = Math.floor((Math.random() * 9999) + 1);
 		$rootScope.callbacks[id] = callback;
 		$rootScope.socket.emit(event, {id: id, data: msg});	
