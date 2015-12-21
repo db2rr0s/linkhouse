@@ -19,9 +19,12 @@ div#create.modal
     h4 New Device
     form.col.s12
       div.row
-        div.input-field.col.s12            
+        div.input-field.col.s8            
           input#name.validate(type='text', placeholder='Name', ng-model='device.name')
           label(for='name') Name
+        div.input-field.col.s4            
+          input#port.validate(type='text', placeholder='Port', ng-model='device.port')
+          label(for='port') Port
       div.row
         div.input-field.col.s8            
           input#public_ip.validate(type='text', placeholder='Public IP', ng-model='device.public_ip')

@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var deviceSchema = new Schema({
 	user: {type: Schema.ObjectId, ref: 'User', required: true},
 	name: String,
+	port: Number,
 	public_ip: String,
 	public_port: Number,
 	internal_ip: String,

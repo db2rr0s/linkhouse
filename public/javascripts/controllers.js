@@ -1,10 +1,9 @@
 angular.module('linkhouse.controllers', [])
 
-.controller('IndexCtrl', function($scope, $rootScope){
-	$scope.luzquarto = false;
-	$scope.luzsala = false;
+.controller('IndexCtrl', function($scope, $rootScope, $http){
+	$scope.devices = [];
 
-	$scope.refresh = function(){		
+	$scope.refresh = function(){
 		$scope.sendio('*', function(msg){
 			if(msg.success){				
 				$scope.luzquarto = (msg.data[1] == 1);
@@ -18,13 +17,25 @@ angular.module('linkhouse.controllers', [])
 		});		
 	};
 
+	$http.get('/api/devices')
+	.success(function(data){
+		if(data.status == 0){
+			$scope.devices = data.devices;
+		} else {
+			console.log(data);
+		}
+	})
+	.error(function(data){
+		console.log(data);
+	});
+
 	$scope.refresh();	
 
-	$scope.change = function(){
-        $scope.sendio('$' + ($scope.luzquarto ? '1' : '0') + ($scope.luzsala ? '1' : '0') + '#######', function(msg){        
-			if(msg.success){				
-				$scope.luzquarto = (msg.data[1] == 1);
-				$scope.luzsala = (msg.data[2] == 1);
+	$scope.change = function(device){
+		var command = '$#########';
+		command[device.port] = device.state ? '1' : '0';		
+        $scope.sendio(command, function(msg){        
+			if(msg.success){
 				$scope.retorno = msg.data;
 				$scope.$apply();
 			} else {
@@ -60,6 +71,7 @@ angular.module('linkhouse.controllers', [])
 		$http.post('/api/devices', $scope.device)
 		.success(function(data){
 			console.log(data);
+			$('#create').closeModal();
 		})
 		.error(function(data){
 			console.log(data);
