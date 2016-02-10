@@ -68,25 +68,27 @@ app.ioconf = function(io){
     socket.on('req', function(msg){
       console.log('req with msg ' + JSON.stringify(msg));
       var client = new net.Socket();
-	  client.on('data', function(data){
-		  //TODO: tratar retorno
-		  var ret = data.toString();
-		  console.log(ret);
-		  client.destroy();
-		  socket.emit('res', {success: true, id: msg.id, data: ret, message: 'Comando executado!'});
-	  });
-	  client.on('close', function(){
-		  //TODO: ver
-		  console.log('bufu');
-	  });
-	  client.on('error', function(err){
-	      console.log('BUFU');console.log(err);
-          socket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
-	  });
-	  client.connect(8082, 'andxor-01.noip.me', function(){
-		  client.write(msg.data + '\r');
-	  });
-	  return;
+	    client.on('data', function(data){
+  		  //TODO: tratar retorno
+  		  var ret = data.toString();
+  		  console.log(ret);
+  		  client.destroy();
+  		  socket.emit('res', {success: true, id: msg.id, data: ret, message: 'Comando executado!'});
+  	  });
+
+  	  client.on('close', function(){
+  		  //TODO: ver
+  		  console.log('bufu');
+  	  });
+
+  	  client.on('error', function(err){
+  	    console.log('BUFU');console.log(err);
+        ocket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
+  	  });
+
+  	  client.connect(8082, 'andxor-01.noip.me', function(){
+  		  client.write(msg.data + '\r');
+  	  });
     });
 
     socket.on('save', function(msg){
@@ -99,9 +101,8 @@ app.ioconf = function(io){
 
         Settings.find(function(err, settings){
           socket.emit('res', {id: msg.id, message: settings});
-        });
-        
-      })      
+        });        
+      });
     });
   });
 }
