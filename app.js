@@ -66,7 +66,7 @@ app.ioconf = function(io){
     });
 
     socket.on('req', function(msg){
-      console.log('req with msg ' + JSON.stringify(msg));
+      console.log('socket req with ' + JSON.stringify(msg));
       var client = new net.Socket();
 	    client.on('data', function(data){
   		  //TODO: tratar retorno
@@ -78,11 +78,11 @@ app.ioconf = function(io){
 
   	  client.on('close', function(){
   		  //TODO: ver
-  		  console.log('bufu');
+  		  console.log('client close');
   	  });
 
   	  client.on('error', function(err){
-  	    console.log('BUFU');console.log(err);
+  	    console.log('client error with ' + err);
         socket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
   	  });
 
@@ -92,7 +92,7 @@ app.ioconf = function(io){
     });
 
     socket.on('save', function(msg){
-      console.log('save with ' + msg);      
+      console.log('socket save with ' + msg);      
       var url = new Settings({'url': msg.url});
       url.save(function(err){
         if(err){
