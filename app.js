@@ -83,7 +83,7 @@ app.ioconf = function(io){
 
   	  client.on('error', function(err){
   	    console.log('BUFU');console.log(err);
-        ocket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
+        socket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
   	  });
 
   	  client.connect(8082, 'andxor-01.noip.me', function(){
