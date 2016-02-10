@@ -5,9 +5,11 @@ angular.module('linkhouse.controllers', [])
 
 	$scope.refresh = function(){
 		$scope.sendio('*', function(msg){
-			if(msg.success){				
-				$scope.luzquarto = (msg.data[1] == 1);
-				$scope.luzsala = (msg.data[2] == 1);
+			if(msg.success){
+				for(var i = 0; i < $scope.devices.length; i++){
+					var device = $scope.devices[i];
+					device.state = msg.data[device.port] == '1';
+				}
 				$scope.retorno = msg.data;
 				$scope.$apply();
 			} else {
@@ -77,6 +79,7 @@ angular.module('linkhouse.controllers', [])
 			console.log(data);
 		});
 	};
+
 	$scope.showCreateModal = function(){
 		console.log('vai criar')
 		$('#create').openModal();
