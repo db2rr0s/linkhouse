@@ -35,7 +35,7 @@ angular.module('linkhouse.controllers', [])
 
 	$scope.change = function(device){
 		var command = '$#########';
-		command[device.port] = device.state ? '1' : '0';		
+		command = command.substr(0, device.port) + (device.state ? '1' : '0') + command.substr(device.port + 1)
         $scope.sendio(command, function(msg){        
 			if(msg.success){
 				$scope.retorno = msg.data;
