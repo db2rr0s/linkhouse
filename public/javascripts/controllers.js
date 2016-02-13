@@ -6,10 +6,25 @@ angular.module('linkhouse.controllers', [])
 	$scope.refresh = function(){
 		$scope.sendio('*', function(msg){
 			if(msg.success){
-				for(var i = 0; i < $scope.devices.length; i++){
-					var device = $scope.devices[i];
-					device.state = msg.data[device.port] == '1';
+				if(msg.data.substr(0, 1) == '*'){
+					var aux = $scope.devices.filter(function(d){ return d.returns == 'ST'; });
+					for(var i = 0; i < aux.length; i++){
+						var device = $aux[i];
+						device.state = msg.data[device.port] == '1';
+					}
+				} else {
+					var aux = $scope.devices.filter(function(d){ return d.returns == 'TE' });
+					for(var i = 0; i < aux; i++){
+						var device = aux[i];
+						device.state = msg.data.substr(1,2);
+					}
+					aux = $scope.devices.filter(function(d){ return d.returns == 'UM'; });
+					for(var i = 0; i < aux; i++){
+						var device = aux[i];
+						device.state = msg.data.substr(3,2);
+					}
 				}
+				
 				$scope.retorno = msg.data;
 				$scope.$apply();
 			} else {
