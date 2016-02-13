@@ -54,7 +54,8 @@ angular.module('linkhouse.controllers', [])
 		public_ip: '',
 		public_port: '',
 		internal_ip: '',
-		internal_port: ''
+		internal_port: '',
+		returns: 'ST'
 	};
 
 	function refreshDevices(){

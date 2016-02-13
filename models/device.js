@@ -11,7 +11,8 @@ var deviceSchema = new Schema({
 	internal_port: Number,
 	groups: [{type: Schema.ObjectId, ref: 'Group'}],
 	created_at: Date,
-	deleted_at: Date
+	deleted_at: Date,
+	returns: {type: String, enum: ['ST', 'TE', 'UM']}
 });
 
 var Device = mongoose.model('Device', deviceSchema);

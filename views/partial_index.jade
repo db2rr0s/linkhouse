@@ -2,9 +2,17 @@ div.container
   div.section
     div.row
       div.col.s12.m4
-        p(ng-repeat="device in devices")
+        p(ng-repeat="device in devices | filter:{returns: 'ST'}")
           input.filled-in(id='dvc{{$index}}', type='checkbox', ng-model='device.state' ng-change='change(device)')
           label(for='dvc{{$index}}') {{ device.name }}
+    div.row
+      div.col.s12.m4        
+        p(ng-repeat="device in devices | filter:{returns: 'TE'}")
+          label {{ device.name }}: {{ device.state }} °C
+    div.row
+      div.col.s12.m4        
+        p(ng-repeat="device in devices | filter:{returns: 'UM'}")
+          label {{ device.name }}: {{ device.state }} %          
     div.row
       div.col.s12.m4
         button.waves-effect.waves-light.btn(ng-click='refresh()') Refresh

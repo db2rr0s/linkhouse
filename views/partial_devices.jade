@@ -10,6 +10,7 @@ div.container
               th Port
               th Public URL
               th Internal URL
+              th Returns
               tr
           tbody
             tr(ng-repeat='device in devices')
@@ -17,6 +18,7 @@ div.container
               td {{device.port}}
               td {{device.public_ip}}:{{device.public_port}}
               td {{device.internal_ip}}:{{device.internal_port}}
+              td {{device.returns}}
               td
                 a.btn-flat(ng-click='delete(device)')
                   i.material-icons.left delete
@@ -26,12 +28,12 @@ div#create.modal
     h4 New Device
     form.col.s12
       div.row
-        div.input-field.col.s8            
+        div.input-field.col.s8           
           input#name.validate(type='text', placeholder='Name', ng-model='device.name')
           label(for='name') Name
-        div.input-field.col.s4            
+        div.input-field.col.s4           
           input#port.validate(type='text', placeholder='Port', ng-model='device.port')
-          label(for='port') Port
+          label(for='port') Port        
       div.row
         div.input-field.col.s8            
           input#public_ip.validate(type='text', placeholder='Public IP', ng-model='device.public_ip')
@@ -45,7 +47,17 @@ div#create.modal
           label(for='internal_ip') Internal IP
         div.input-field.col.s4            
           input#internal_port.validate(type='text', placeholder='Internal Port', ng-model='device.internal_port')
-          label(for='internal_port') Internal Port        
+          label(for='internal_port') Internal Port
+      div.row
+        div.input-field.col.s3
+          input#st(name='returns', type='radio', value="ST", ng-model='device.returns')   
+          label(for='st') State
+        div.input-field.col.s3
+          input#te(name='returns', type='radio', value="TE", ng-model='device.returns')   
+          label(for='te') Temperature
+        div.input-field.col.s3
+          input#um(name='returns', type='radio', value="UM", ng-model='device.returns')   
+          label(for='um') Humidity          
       div.row
         div.col.s12
           button.waves-effect.waves-light.btn.right(type='button', ng-click='save()') Save
