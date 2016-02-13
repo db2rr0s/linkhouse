@@ -57,23 +57,26 @@ angular.module('linkhouse.controllers', [])
 		internal_port: ''
 	};
 
-	$http.get('/api/devices')
-	.success(function(data){
-		if(data.status == 0){
-			$scope.devices = data.devices;
-		} else {
+	function refreshDevices(){
+		$http.get('/api/devices')
+		.success(function(data){
+			if(data.status == 0){
+				$scope.devices = data.devices;
+			} else {
+				console.log(data);
+			}
+		})
+		.error(function(data){
 			console.log(data);
-		}
-	})
-	.error(function(data){
-		console.log(data);
-	});
+		});
+	}	
 	
 	$scope.save = function(){
 		$http.post('/api/devices', $scope.device)
 		.success(function(data){
 			console.log(data);
 			$('#create').closeModal();
+			refreshDevices();
 		})
 		.error(function(data){
 			console.log(data);
@@ -91,12 +94,15 @@ angular.module('linkhouse.controllers', [])
 		.success(function(data){
 			console.log('success')
 			console.log(data);
+			refreshDevices();
 		})
 		.error(function(data){
 			console.log('error')
 			console.log(data)
 		});
 	}
+
+	refreshDevices();
 })
 
 .controller('MenuCtrl', function($scope, $location){
