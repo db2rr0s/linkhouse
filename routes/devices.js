@@ -37,4 +37,15 @@ router.post('/', function(req, res, next){
 	});	
 });
 
+router.delete('/:id', function(req, res, next){
+	Device.findByIdAndRemove(req.params.id, function(err){
+		if(err){
+			res.send({status: 1, message: 'error whiling delete object', error: err});
+			return;
+		}
+
+		res.send({status: 0, message: 'Device deleted.'});
+	});
+});
+
 module.exports = router;

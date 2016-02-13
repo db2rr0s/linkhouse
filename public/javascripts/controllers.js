@@ -84,6 +84,19 @@ angular.module('linkhouse.controllers', [])
 		console.log('vai criar')
 		$('#create').openModal();
 	};
+
+	$scope.delete = function(device){
+		console.log(device)
+		$http.delete('/api/devices/' + device._id)
+		.success(function(data){
+			console.log('success')
+			console.log(data);
+		})
+		.error(function(data){
+			console.log('error')
+			console.log(data)
+		});
+	}
 })
 
 .controller('MenuCtrl', function($scope, $location){

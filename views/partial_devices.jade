@@ -10,12 +10,17 @@ div.container
               th Port
               th Public URL
               th Internal URL
+              tr
           tbody
             tr(ng-repeat='device in devices')
               td {{device.name}}
               td {{device.port}}
               td {{device.public_ip}}:{{device.public_port}}
               td {{device.internal_ip}}:{{device.internal_port}}
+              td
+                a.btn-flat(ng-click='delete(device)')
+                  i.material-icons.left delete
+
 div#create.modal
   div.modal-content
     h4 New Device
