@@ -9,7 +9,9 @@ var net = require('net');
 
 var index = require('./routes/index');
 var partials = require('./routes/partials');
+var areas = require('./routes/areas');
 var devices = require('./routes/devices');
+var pins = require('./routes/pins');
 
 var app = express();
 
@@ -25,7 +27,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/partials', partials);
+app.use('/api/areas', areas);
 app.use('/api/devices', devices);
+app.use('/api/pins', pins);
 
 app.all('/*', function(req, res) {
   res.render('index');

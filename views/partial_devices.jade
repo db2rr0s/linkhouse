@@ -6,34 +6,42 @@ div.container
         table
           thead
             tr
+              th Area
               th Name
-              th Port
+              th MAC
               th Public URL
-              th Internal URL
-              th Returns
+              th Internal URL              
               tr
           tbody
             tr(ng-repeat='device in devices')
+              td {{device.area.name}}
               td {{device.name}}
-              td {{device.port}}
+              td {{device.mac}}
               td {{device.public_ip}}:{{device.public_port}}
-              td {{device.internal_ip}}:{{device.internal_port}}
-              td {{device.returns}}
+              td {{device.internal_ip}}:{{device.internal_port}}              
               td
                 a.btn-flat(ng-click='delete(device)')
                   i.material-icons.left delete
+                a.btn-flat(ng-click='showEditPins(device)')
+                  i.material-icons.left edit
 
 div#create.modal
   div.modal-content
     h4 New Device
     form.col.s12
       div.row
+        div.input-field.col.s12
+          select(ng-model='device.area')
+            option.disabled.selected(value='') Choose an Area
+            option(value='{{area}}', ng-repeat='area in areas') {{area.name}}
+          label Area
+      div.row
         div.input-field.col.s8           
           input#name.validate(type='text', placeholder='Name', ng-model='device.name')
-          label(for='name') Name
-        div.input-field.col.s4           
-          input#port.validate(type='text', placeholder='Port', ng-model='device.port')
-          label(for='port') Port        
+          label(for='name') Name   
+        div.input-field.col.s4
+          input#mac.validate(type='text', placeholder'MAC Address', ng-model='device.mac')
+          label(for='mac') MAC   
       div.row
         div.input-field.col.s8            
           input#public_ip.validate(type='text', placeholder='Public IP', ng-model='device.public_ip')
@@ -47,17 +55,46 @@ div#create.modal
           label(for='internal_ip') Internal IP
         div.input-field.col.s4            
           input#internal_port.validate(type='text', placeholder='Internal Port', ng-model='device.internal_port')
-          label(for='internal_port') Internal Port
-      div.row
-        div.input-field.col.s3
-          input#st(name='returns', type='radio', value="ST", ng-model='device.returns')   
-          label(for='st') State
-        div.input-field.col.s3
-          input#te(name='returns', type='radio', value="TE", ng-model='device.returns')   
-          label(for='te') Temperature
-        div.input-field.col.s3
-          input#um(name='returns', type='radio', value="UM", ng-model='device.returns')   
-          label(for='um') Humidity          
+          label(for='internal_port') Internal Port      
       div.row
         div.col.s12
           button.waves-effect.waves-light.btn.right(type='button', ng-click='save()') Save
+
+div#editpins.modal
+  div.modal-content
+    h4 Pins of Device
+    a.right.btn-flat(ng-click='showCreatePinModal()') Create Pin
+    div.row
+      div.col.s12        
+        table
+          thead
+            tr
+              th Name
+              th Type
+              tr
+          tbody
+            tr(ng-repeat='pin in pins')
+              td {{pin.name}}
+              td {{pin.type}}
+              td
+                a.btn-flat(ng-click='deletePin(pin)')
+                  i.material-icons.left delete
+
+div#createpin.modal
+  div.modal-content
+    h4 New Pin
+    form.col.s12
+      div.row
+        div.input-field.col.s8           
+          input#name.validate(type='text', placeholder='Name', ng-model='pin.name')
+          label(for='name') Name
+      div.row
+        div.input-field.col.s3
+          input#stat(name='type', type='radio', value="S", ng-model='pin.type')   
+          label(for='stat') State
+        div.input-field.col.s3
+          input#temp(name='type', type='radio', value="T", ng-model='pin.type')   
+          label(for='temp') Temperature/Humidity
+      div.row
+        div.col.s12
+          button.waves-effect.waves-light.btn.right(type='button', ng-click='savePin()') Save

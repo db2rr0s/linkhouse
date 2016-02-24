@@ -5,6 +5,10 @@ router.get('/index', function(req, res, next) {
   res.render('partial_index');
 });
 
+router.get('/areas', function(req, res, next) {
+  res.render('partial_areas');
+});
+
 router.get('/devices', function(req, res, next) {
   res.render('partial_devices');
 });

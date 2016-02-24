@@ -7,6 +7,10 @@ angular.module('linkhouse', ['ngRoute', 'linkhouse.services', 'linkhouse.control
 		templateUrl: 'partials/index',
 		controller: 'IndexCtrl'
 	})
+	.when('/areas', {
+		templateUrl: 'partials/areas',
+		controller: 'AreaCtrl'
+	})
 	.when('/devices', {
 		templateUrl: 'partials/devices',
 		controller: 'DeviceCtrl'

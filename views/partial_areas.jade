@@ -1,0 +1,28 @@
+div.container  
+  div.section
+    a.right.btn-flat(ng-click='showCreateModal()') Create Area
+    div.row
+      div.col.s12        
+        table
+          thead
+            tr
+              th Name              
+              tr
+          tbody
+            tr(ng-repeat='area in areas')
+              td {{area.name}}              
+              td
+                a.btn-flat(ng-click='delete(area)')
+                  i.material-icons.left delete
+
+div#create.modal
+  div.modal-content
+    h4 New Area
+    form.col.s12
+      div.row
+        div.input-field.col.s12          
+          input#name.validate(type='text', placeholder='Name', ng-model='area.name')
+          label(for='name') Name        
+      div.row
+        div.col.s12
+          button.waves-effect.waves-light.btn.right(type='button', ng-click='save()') Save

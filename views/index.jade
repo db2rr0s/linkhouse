@@ -7,11 +7,15 @@ block content
       ul.right.hide-on-med-and-down
         li(ng-class="{active: active('/')}")
           a(href='/') Home
+        li(ng-class="{active: active('/areas')}")
+          a(href='/areas') Areas
         li(ng-class="{active: active('/devices')}")
           a(href='/devices') Devices
       ul#nav-mobile.side-nav
         li(ng-class="{active: active('/')}")
           a(href='/') Home
+        li(ng-class="{active: active('/areas')}")
+          a(href='/areas') Areas
         li(ng-class="{active: active('/devices')}")
           a(href='/devices') Devices
       a.button-collapse(data-activates='nav-mobile', href='#')

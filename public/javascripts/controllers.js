@@ -34,10 +34,10 @@ angular.module('linkhouse.controllers', [])
 		});		
 	};
 
-	$http.get('/api/devices')
+	$http.get('/api/areas')
 	.success(function(data){
 		if(data.status == 0){
-			$scope.devices = data.devices;
+			$scope.areas = data.areas;
 		} else {
 			console.log(data);
 		}
@@ -45,6 +45,20 @@ angular.module('linkhouse.controllers', [])
 	.error(function(data){
 		console.log(data);
 	});
+
+	function getDevices(area){
+		$http.get('/api/devices?area=' + area._id)
+		.success(function(data){
+			if(data.status == 0){
+				return data.devices;
+			} else {
+				console.log(data);
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}	
 
 	$scope.refresh();	
 
@@ -63,21 +77,106 @@ angular.module('linkhouse.controllers', [])
 	};
 })
 
+.controller('AreaCtrl', function($scope, $http){	
+	$scope.area = {
+		name: ''
+	};
+
+	function refreshAreas(){
+		$http.get('/api/areas')
+		.success(function(data){
+			if(data.status == 0){
+				$scope.areas = data.areas;
+			} else {
+				console.log(data);
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}	
+	
+	$scope.save = function(){
+		$http.post('/api/areas', $scope.area)
+		.success(function(data){
+			console.log(data);
+			$('#create').closeModal();
+			refreshAreas();
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	};
+
+	$scope.showCreateModal = function(){		
+		$('#create').openModal();
+	};
+
+	$scope.delete = function(area){
+		$http.delete('/api/areas/' + area._id)
+		.success(function(data){
+			console.log('success')
+			console.log(data);
+			refreshAreas();
+		})
+		.error(function(data){
+			console.log('error')
+			console.log(data)
+		});
+	}
+
+	refreshAreas();
+})
+
 .controller('DeviceCtrl', function($scope, $http){	
-	$scope.device = {
+	$scope.device = {		
+		area: undefined,
 		name: '',
+		mac: '',
 		public_ip: '',
 		public_port: '',
 		internal_ip: '',
-		internal_port: '',
-		returns: 'ST'
+		internal_port: ''
 	};
+
+	$scope.pin = {
+		device: undefined,
+		type: 'S',
+		name: ''
+	}	
+
+	// POG: temp
+	$http.get('/api/areas')
+	.success(function(data){
+		if(data.status == 0){
+			$scope.areas = data.areas;
+		} else {
+			console.log(data);
+		}
+	})
+	.error(function(data){
+		console.log(data);
+	});
 
 	function refreshDevices(){
 		$http.get('/api/devices')
 		.success(function(data){
 			if(data.status == 0){
 				$scope.devices = data.devices;
+			} else {
+				console.log(data);
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}	
+
+	function refreshPins(){
+		$http.get('/api/pins?device=' + $scope.pin.device._id)
+		.success(function(data){
+			if(data.status == 0){
+				$scope.pins = data.pins;
 			} else {
 				console.log(data);
 			}
@@ -100,17 +199,53 @@ angular.module('linkhouse.controllers', [])
 	};
 
 	$scope.showCreateModal = function(){
-		console.log('vai criar')
+		$(document).ready(function() {
+		    $('select').material_select();
+		});
 		$('#create').openModal();
 	};
 
+	$scope.showEditPins = function(device){
+		$scope.pin.device = device;
+		refreshPins();
+		$('#editpins').openModal();
+	}
+
 	$scope.delete = function(device){
-		console.log(device)
 		$http.delete('/api/devices/' + device._id)
 		.success(function(data){
 			console.log('success')
 			console.log(data);
 			refreshDevices();
+		})
+		.error(function(data){
+			console.log('error')
+			console.log(data)
+		});
+	}
+
+	$scope.showCreatePinModal = function(){
+		$('#createpin').openModal();
+	}
+
+	$scope.savePin = function(){
+		$http.post('/api/pins', $scope.pin)
+		.success(function(data){
+			console.log(data);
+			$('#createpin').closeModal();
+			refreshPins();
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	};
+
+	$scope.deletePin = function(pin){
+		$http.delete('/api/pins/' + pin._id)
+		.success(function(data){
+			console.log('success')
+			console.log(data);
+			refreshPins();
 		})
 		.error(function(data){
 			console.log('error')
