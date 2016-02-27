@@ -12,6 +12,7 @@ var partials = require('./routes/partials');
 var areas = require('./routes/areas');
 var devices = require('./routes/devices');
 var pins = require('./routes/pins');
+var dashboard = require('./routes/dashboard');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/partials', partials);
 app.use('/api/areas', areas);
 app.use('/api/devices', devices);
 app.use('/api/pins', pins);
+app.use('/api/dashboard', dashboard);
 
 app.all('/*', function(req, res) {
   res.render('index');
@@ -61,6 +63,8 @@ app.use(function(err, req, res, next) {
 
 mongoose.connect('mongodb://lhuser:Lhus3r$@93.188.161.195/linkhousedb');
 
+var Pin = require('./models/pin');
+
 app.ioconf = function(io){
   io.on('connection', function(socket){
     console.log('user connected');
@@ -69,8 +73,8 @@ app.ioconf = function(io){
       console.log('user disconnected');
     });
 
-    socket.on('req', function(msg){
-      console.log('socket req with ' + JSON.stringify(msg));
+    socket.on('status', function(msg){
+      console.log('status: ' + JSON.stringify(msg));
       var client = new net.Socket();
 	    client.on('data', function(data){
   		  //TODO: tratar retorno
@@ -93,6 +97,40 @@ app.ioconf = function(io){
   	  client.connect(8082, 'andxor-01.noip.me', function(){
   		  client.write(msg.data + '\r');
   	  });
+    });
+
+    socket.on('change', function(msg){
+      console.log('change: ' + JSON.stringify(msg));
+
+      Pin.findById(msg.data._id).populate('device').exec(function(err, pin){
+        if(err){
+          socket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
+          return;
+        }
+
+        var client = new net.Socket();
+        client.on('data', function(data){
+          //TODO: tratar retorno
+          var ret = data.toString();
+          console.log(ret);
+          client.destroy();
+          socket.emit('res', {success: true, id: msg.id, data: ret, message: 'Comando executado!'});
+        });
+
+        client.on('close', function(){
+          //TODO: ver
+          console.log('client close');
+        });
+
+        client.on('error', function(err){
+          console.log('client error with ' + err);
+          socket.emit('res', {success: false, id: msg.id, data: '', message: JSON.stringify(err)});
+        });
+
+        client.connect(pin.device.public_port, pin.device.public_ip, function(){
+          client.write('$' + (msg.data.state ? 1 : 0) + '#####\r');
+        });
+      });      
     });
 
     socket.on('save', function(msg){

@@ -9,6 +9,7 @@ div.container
               th Area
               th Name
               th MAC
+              th Type
               th Public URL
               th Internal URL              
               tr
@@ -17,6 +18,7 @@ div.container
               td {{device.area.name}}
               td {{device.name}}
               td {{device.mac}}
+              td {{device.type}}
               td {{device.public_ip}}:{{device.public_port}}
               td {{device.internal_ip}}:{{device.internal_port}}              
               td
@@ -30,11 +32,17 @@ div#create.modal
     h4 New Device
     form.col.s12
       div.row
-        div.input-field.col.s12
+        div.input-field.col.s4
           select(ng-model='device.area')
             option.disabled.selected(value='') Choose an Area
             option(value='{{area}}', ng-repeat='area in areas') {{area.name}}
           label Area
+        div.input-field.col.s3
+          input#stat(name='type', type='radio', value="S", ng-model='device.type')   
+          label(for='stat') State
+        div.input-field.col.s3
+          input#temp(name='type', type='radio', value="T", ng-model='device.type')   
+          label(for='temp') Temperature/Humidity
       div.row
         div.input-field.col.s8           
           input#name.validate(type='text', placeholder='Name', ng-model='device.name')
@@ -55,7 +63,7 @@ div#create.modal
           label(for='internal_ip') Internal IP
         div.input-field.col.s4            
           input#internal_port.validate(type='text', placeholder='Internal Port', ng-model='device.internal_port')
-          label(for='internal_port') Internal Port      
+          label(for='internal_port') Internal Port  
       div.row
         div.col.s12
           button.waves-effect.waves-light.btn.right(type='button', ng-click='save()') Save
@@ -70,12 +78,10 @@ div#editpins.modal
           thead
             tr
               th Name
-              th Type
               tr
           tbody
             tr(ng-repeat='pin in pins')
               td {{pin.name}}
-              td {{pin.type}}
               td
                 a.btn-flat(ng-click='deletePin(pin)')
                   i.material-icons.left delete
@@ -88,13 +94,6 @@ div#createpin.modal
         div.input-field.col.s8           
           input#name.validate(type='text', placeholder='Name', ng-model='pin.name')
           label(for='name') Name
-      div.row
-        div.input-field.col.s3
-          input#stat(name='type', type='radio', value="S", ng-model='pin.type')   
-          label(for='stat') State
-        div.input-field.col.s3
-          input#temp(name='type', type='radio', value="T", ng-model='pin.type')   
-          label(for='temp') Temperature/Humidity
       div.row
         div.col.s12
           button.waves-effect.waves-light.btn.right(type='button', ng-click='savePin()') Save

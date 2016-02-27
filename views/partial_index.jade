@@ -3,13 +3,15 @@ div.container
     h5 {{area.name}}
     div.row
       div.col.s12.m4
-        p(ng-repeat="device in getDevices(area)")
-          input.filled-in(id='dvc{{$index}}', type='checkbox', ng-model='device.state' ng-change='change(device)')
-          label(for='dvc{{$index}}') {{ device.name }}    
+        p(ng-repeat="device in area.devices |filter:{ type: 'T' }") {{device.name}}: {{device.state}}          
+    div.row(ng-repeat="device in area.devices |filter:{ type: 'S' }")
+      div.col.s12.m4
+        p(ng-repeat="pin in device.pins")
+          input.filled-in(id='dvc{{$index}}', type='checkbox', ng-model='pin.state' ng-change='change(pin)')
+          label(for='dvc{{$index}}') {{ pin.name }}    
   div.section
+      div.col.s12.m2
+        button.waves-effect.waves-light.btn(ng-click='debug()') Debug
     div.row
-      div.col.s12.m4
-        button.waves-effect.waves-light.btn(ng-click='refresh()') Refresh
-    div.row
-      div.col.s12.m4
-        small RETORNO: {{ retorno }}    
+      div.col.s12.m12
+        small RETORNO: {{ retorno }}

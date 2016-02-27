@@ -1,79 +1,36 @@
 angular.module('linkhouse.controllers', [])
 
 .controller('IndexCtrl', function($scope, $rootScope, $http){
-	$scope.devices = [];
+	$scope.areas = undefined;
 
 	$scope.refresh = function(){
-		$scope.sendio('*', function(msg){
-			if(msg.success){
-				if(msg.data.substr(0, 1) == '*'){
-					var aux = $scope.devices.filter(function(d){ return d.returns == 'ST'; });
-					for(var i = 0; i < aux.length; i++){
-						var device = $aux[i];
-						device.state = msg.data[device.port] == '1';
-					}
-				} else {
-					var aux = $scope.devices.filter(function(d){ return d.returns == 'TE' });
-					for(var i = 0; i < aux; i++){
-						var device = aux[i];
-						device.state = msg.data.substr(1,2);
-					}
-					aux = $scope.devices.filter(function(d){ return d.returns == 'UM'; });
-					for(var i = 0; i < aux; i++){
-						var device = aux[i];
-						device.state = msg.data.substr(3,2);
-					}
-				}
-				
-				$scope.retorno = msg.data;
-				$scope.$apply();
-			} else {
-				console.log('bufu: ' + msg.message);
-				$scope.retorno = 'erro: ' + msg.message;
-			}			
-		});		
-	};
-
-	$http.get('/api/areas')
-	.success(function(data){
-		if(data.status == 0){
-			$scope.areas = data.areas;
-		} else {
-			console.log(data);
-		}
-	})
-	.error(function(data){
-		console.log(data);
-	});
-
-	function getDevices(area){
-		$http.get('/api/devices?area=' + area._id)
+		$http.get('/api/dashboard')
 		.success(function(data){
 			if(data.status == 0){
-				return data.devices;
+				$scope.areas = data.areas;
 			} else {
 				console.log(data);
 			}
-		})
+		})	
 		.error(function(data){
 			console.log(data);
 		});
-	}	
+	};
+
+	$scope.debug = function(){
+		$scope.sendio('', function(msg){
+			$scope.retorno = msg;
+			$scope.$apply();
+		});
+	}
 
 	$scope.refresh();	
 
-	$scope.change = function(device){
-		var command = '$#########';
-		command = command.substr(0, device.port) + (device.state ? '1' : '0') + command.substr(device.port + 1)
-        $scope.sendio(command, function(msg){        
-			if(msg.success){
-				$scope.retorno = msg.data;
-				$scope.$apply();
-			} else {
-				console.log('bufu: ' + msg.message);
-				$scope.retorno = 'erro: ' + msg.message;
-			}
-		});
+	$scope.change = function(pin){
+        $scope.sendio(pin, function(msg){        
+        	$scope.retorno = msg;
+        	$scope.$apply();			
+		}, 'change');
 	};
 })
 
@@ -98,8 +55,7 @@ angular.module('linkhouse.controllers', [])
 	
 	$scope.save = function(){
 		$http.post('/api/areas', $scope.area)
-		.success(function(data){
-			console.log(data);
+		.success(function(data){			
 			$('#create').closeModal();
 			refreshAreas();
 		})
@@ -115,12 +71,9 @@ angular.module('linkhouse.controllers', [])
 	$scope.delete = function(area){
 		$http.delete('/api/areas/' + area._id)
 		.success(function(data){
-			console.log('success')
-			console.log(data);
 			refreshAreas();
 		})
 		.error(function(data){
-			console.log('error')
 			console.log(data)
 		});
 	}
@@ -133,6 +86,7 @@ angular.module('linkhouse.controllers', [])
 		area: undefined,
 		name: '',
 		mac: '',
+		type: 'S',
 		public_ip: '',
 		public_port: '',
 		internal_ip: '',
@@ -141,7 +95,6 @@ angular.module('linkhouse.controllers', [])
 
 	$scope.pin = {
 		device: undefined,
-		type: 'S',
 		name: ''
 	}	
 
@@ -189,7 +142,6 @@ angular.module('linkhouse.controllers', [])
 	$scope.save = function(){
 		$http.post('/api/devices', $scope.device)
 		.success(function(data){
-			console.log(data);
 			$('#create').closeModal();
 			refreshDevices();
 		})
@@ -213,13 +165,10 @@ angular.module('linkhouse.controllers', [])
 
 	$scope.delete = function(device){
 		$http.delete('/api/devices/' + device._id)
-		.success(function(data){
-			console.log('success')
-			console.log(data);
+		.success(function(data){		
 			refreshDevices();
 		})
 		.error(function(data){
-			console.log('error')
 			console.log(data)
 		});
 	}
@@ -231,7 +180,6 @@ angular.module('linkhouse.controllers', [])
 	$scope.savePin = function(){
 		$http.post('/api/pins', $scope.pin)
 		.success(function(data){
-			console.log(data);
 			$('#createpin').closeModal();
 			refreshPins();
 		})
@@ -243,12 +191,9 @@ angular.module('linkhouse.controllers', [])
 	$scope.deletePin = function(pin){
 		$http.delete('/api/pins/' + pin._id)
 		.success(function(data){
-			console.log('success')
-			console.log(data);
 			refreshPins();
 		})
 		.error(function(data){
-			console.log('error')
 			console.log(data)
 		});
 	}
