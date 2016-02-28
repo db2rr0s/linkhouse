@@ -1,0 +1,18 @@
+// se dispositivo de comando
+{
+	'id': 'MMMMMMMMMMMM',
+	'status': 'XXXXXX',
+	'sinal': 'NN'
+}
+
+// se dispositivo de temperatura/umidade
+{
+	'id': 'MMMMMMMMMMMM',
+	'status': 'XXXX',
+	'sinal': 'NN'
+}
+
+
+
+
+pc_Request = "{'id': '" + MAC + "','status': '" + digitalRead(CARGA) + "######','sinal':" + rssi + "}"

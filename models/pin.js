@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var pinSchema = new Schema({
 	device: {type: Schema.ObjectId, ref: 'Device', required: true},
 	name: String,
-	state: Boolean
+	state: Boolean,
+	port: Number
 });
 
 var Pin = mongoose.model('Pin', pinSchema);

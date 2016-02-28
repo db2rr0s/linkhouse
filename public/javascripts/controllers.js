@@ -18,7 +18,7 @@ angular.module('linkhouse.controllers', [])
 	};
 
 	$scope.debug = function(){
-		$scope.sendio('', function(msg){
+		$scope.sendio('*', function(msg){
 			$scope.retorno = msg;
 			$scope.$apply();
 		});

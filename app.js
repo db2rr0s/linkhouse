@@ -73,8 +73,8 @@ app.ioconf = function(io){
       console.log('user disconnected');
     });
 
-    socket.on('status', function(msg){
-      console.log('status: ' + JSON.stringify(msg));
+    socket.on('debug', function(msg){
+      console.log('debug: ' + JSON.stringify(msg));
       var client = new net.Socket();
 	    client.on('data', function(data){
   		  //TODO: tratar retorno
@@ -128,7 +128,9 @@ app.ioconf = function(io){
         });
 
         client.connect(pin.device.public_port, pin.device.public_ip, function(){
-          client.write('$' + (msg.data.state ? 1 : 0) + '#####\r');
+          var command = '$' + (msg.data.state ? 1 : 0) + '#####\r';
+          console.log('command: ' + command)
+          client.write(command);
         });
       });      
     });
